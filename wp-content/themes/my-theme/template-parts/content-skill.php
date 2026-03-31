@@ -7,9 +7,8 @@
 <section>
   <h2>スキル</h2>
   <ul>
-    <li>HTML5 / CSS3</li>
-    <li>JavaScript</li>
-    <li>PHP</li>
-    <li>Unity / C#</li>
+    <li>HTML / CSS（基本的なWebページ制作）</li>
+    <li>Unity / C#（ゲーム・アプリ開発）</li>
+    <li>Git / GitHub（バージョン管理）</li>
   </ul>
 </section>

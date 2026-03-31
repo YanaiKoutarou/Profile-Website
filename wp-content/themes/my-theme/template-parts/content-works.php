@@ -8,14 +8,14 @@
   <h2>実績</h2>
   <ul>
     <li>
-      <strong>Web制作</strong><br />
-      HTML/CSSを用いたレスポンシブデザインのコーディング。<br />
-      CSSアニメーションによる動きのあるサイト制作。
+      SKILLPORT 佐鳴Myページ（React / TypeScript / Next.js）
+      <br />
+      └ レイアウト調整やUI改善、機能実装を担当
     </li>
     <li>
-      <strong>Unity開発</strong><br />
-      C#を用いた2D/3Dゲームのロジック実装。<br />
-      独自UIシステムの構築と演出の作成。
+      Unityアプリ開発（C#）
+      <br />
+      └ 4DMP+および船酔いVRの機能実装・動作検証を担当
     </li>
   </ul>
 </section>
