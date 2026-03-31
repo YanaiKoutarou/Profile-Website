@@ -1,0 +1,45 @@
+# docker-compose.yml
+
+# サービス定義: アプリケーションを構成するコンテナ群
+services:
+
+  # データベースサービス（MariaDB）
+  db:
+    image: mariadb:10.6.4-focal        # MariaDB 10.6.4 (Ubuntuベース) を使用
+    volumes:
+      - db_data:/var/lib/mysql          # DBデータを名前付きボリュームで永続化
+    restart: always                     # コンテナが停止した場合は自動再起動
+    environment:
+      - MYSQL_ROOT_PASSWORD=somewordpress  # rootユーザーのパスワード
+      - MYSQL_DATABASE=wordpress           # 作成するデータベース名
+      - MYSQL_USER=wordpress               # 作成するMySQLユーザー名
+      - MYSQL_PASSWORD=wordpress           # MySQLユーザーのパスワード
+    healthcheck:
+      # ヘルスチェックの設定: DBが正常に稼働しているか定期的に確認する
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      # ↑ mysqladmin ping でDBへの疎通確認（認証情報なし・rootで実行）
+      interval: 10s  # ヘルスチェックの実行間隔（前回の5sから10sに変更）
+      timeout: 5s    # タイムアウト時間（5秒以内に応答がなければ失敗と判定）
+      retries: 5     # 連続失敗の許容回数（5回失敗でコンテナを "unhealthy" と判定）
+
+  # WordPressサービス
+  wordpress:
+    image: wordpress:latest             # 最新版のWordPress公式イメージを使用
+    volumes:
+      # ローカルのテーマフォルダをコンテナ内にマウント（開発用）
+      - ./wp-content/themes/my-theme:/var/www/html/wp-content/themes/my-theme
+    ports:
+      - 8000:80                         # ホストの8000番ポートをコンテナの80番ポートに転送
+    restart: always                     # コンテナが停止した場合は自動再起動
+    environment:
+      - WORDPRESS_DB_HOST=db            # 接続先DBホスト名（サービス名 "db" を指定）
+      - WORDPRESS_DB_USER=wordpress     # DB接続ユーザー名
+      - WORDPRESS_DB_PASSWORD=wordpress # DB接続パスワード
+      - WORDPRESS_DB_NAME=wordpress     # 接続するデータベース名
+    depends_on:
+      db:
+        condition: service_healthy       # dbサービスがhealthyになるまで待機
+
+# ボリューム定義
+volumes:
+  db_data:  # DBデータ永続化用の名前付きボリューム（Dockerが管理）
